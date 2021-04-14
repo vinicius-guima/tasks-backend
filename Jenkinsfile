@@ -1,9 +1,9 @@
-pipeline{
-    agent any{
-        stages('Somente teste'){
-            steps{
-                echo 'deu bom'
-            }
+pipeline {
+    agent any
+    stages('Somente teste'){
+        steps{
+            echo 'agora deu bom'
         }
     }
+    
 }
