@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages{
-        stage('Somente teste'){
+        stage('Build backend'){
             steps{
-                echo 'agora deu bom'
+               sh 'mvn clean package -Dmaven.test.skip=true'
             }
         }
     }
