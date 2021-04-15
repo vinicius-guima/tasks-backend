@@ -51,6 +51,14 @@ pipeline {
                 }
             }
         }
+                stage('Functional Tests'){
+            steps{
+                dir('functional-test'){
+                    git branch: 'main', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/https://github.com/vinicius-guima/functional-tests'
+                    sh 'mvn test'
+                }
+            }
+        }
     }
 }
 
