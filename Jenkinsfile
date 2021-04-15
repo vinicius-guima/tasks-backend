@@ -29,16 +29,26 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Back end test'){
+        stage('Deploy Backend test'){
             steps{
                 deploy adapters: [tomcat9(credentialsId: 'TOMCAT_LOGIN', path: '', url: 'http://localhost:8888/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
             }
         }
         stage('API Testes'){
             steps{
-                dir('api-test')
-                git branch: 'main', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/api-test'
-                sh 'mvn test'
+                dir('api-test'){
+                    git branch: 'main', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/api-test'
+                    sh 'mvn test'
+                }
+            }
+        }
+         stage('Deploy Frontend'){
+            steps{
+                dir('Frontend'){
+                    git branch: 'main', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/tasks-frontend'
+                    sh 'mvn clean package'
+                    deploy adapters: [tomcat9(credentialsId: 'TOMCAT_LOGIN', path: '', url: 'http://localhost:8888/')], contextPath: 'tasks', war: 'target/tasks.war'
+                }
             }
         }
     }
