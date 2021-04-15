@@ -36,6 +36,7 @@ pipeline {
         }
         stage('API Testes'){
             steps{
+                dir('api-test')
                 git branch: 'main', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/api-test'
                 sh 'mvn test'
             }
