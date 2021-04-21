@@ -42,7 +42,7 @@ pipeline {
                 }
             }
         }
-         stage('Deploy Frontend'){
+        stage('Deploy Frontend'){
             steps{
                 dir('Frontend'){
                     git branch: 'master', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/tasks-frontend'
@@ -51,12 +51,18 @@ pipeline {
                 }
             }
         }
-                stage('Functional Tests'){
+        stage('Functional Tests'){
             steps{
                 dir('functional-test'){
                     git branch: 'main', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/functional-tests'
                     sh 'mvn test'
                 }
+            }
+        }
+        stage('Deply Prod'){
+            steps{
+                sh 'docker-compose build'
+                sh 'docker-compose up'
             }
         }
     }
