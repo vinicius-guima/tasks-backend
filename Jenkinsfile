@@ -44,7 +44,7 @@ pipeline {
         }
         stage('Deploy Frontend'){
             steps{
-                dir('Frontend'){
+                dir('tasks-frontend'){
                     git branch: 'master', credentialsId: 'GIT_LOGIN', url: 'https://github.com/vinicius-guima/tasks-frontend'
                     sh 'mvn clean package'
                     deploy adapters: [tomcat9(credentialsId: 'TOMCAT_LOGIN', path: '', url: 'http://localhost:8888/')], contextPath: 'tasks', war: 'target/tasks.war'
@@ -77,7 +77,7 @@ pipeline {
     post{
         always{
             junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml, api-test/target/surefire-reports/*.xml, functional-test/target/surefire-reports/*.xml, functional-test/target/failsafe-reports/*.xml'
-            archiveArtifacts artifacts: 'target/tasks-backend.war, Frontend/target/tasks.war', onlyIfSuccessful: true
+            archiveArtifacts artifacts: 'target/tasks-backend.war, tasks-frontend/target/tasks.war', followSymlinks: false, onlyIfSuccessful: true
         }
     }
 }
